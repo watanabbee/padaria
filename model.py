@@ -2,10 +2,10 @@ import sqlite3 as sql
 from datetime import datetime
 
 class Produto:
-    def __init__(self, nome, preco, imagem):
-        #self.id = id_produto
+    def __init__(self, nome, ingredientes, modo_preparo, imagem):
         self.nome = nome
-        self.preco = preco
+        self.ingredientes = ingredientes
+        self.modo_preparo = modo_preparo
         self.imagem = imagem
 
 class Model:
@@ -19,8 +19,19 @@ class Model:
 
     def carregar_produtos(self):
         return [
-            Produto("Misto quente", 6.00, "misto.png")
-            for _ in range(12)
+            Produto(
+                nome="Misto Quente",
+                ingredientes="Pão, presunto, queijo, orégano e manteiga.",
+                modo_preparo="Com duas fatias de pão besuntamos ambas de manteiga, salpicamos o orégano "
+                             "e colocamos duas fatias de queijo e presunto, finalizando dando o ponto na chapa.",
+                imagem="imagens/misto.png"
+            ),
+            Produto(
+                nome="Pão de Queijo",
+                ingredientes="Polvilho, queijo, leite, ovos e óleo.",
+                modo_preparo="Mistura-se todos os ingredientes até formar uma massa homogênea e assa-se até dourar.",
+                imagem="imagens/misto.png"
+            )
         ]
 
     def incrementar_contador(self):
