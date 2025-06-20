@@ -1,9 +1,9 @@
 import tkinter as tk
 
 class LayoutBase(tk.Frame):
-    def __init__(self, master, controller):
+    def __init__(self, master):
         super().__init__(master, bg="white")
-        self.controller = controller
+        
 
         # Topo
         self.frame_topo = tk.Frame(self, bg="#d2a679", height=80)

@@ -1,7 +1,7 @@
 import tkinter as tk
 from controller import Controller
 from model import Model
-
+    
 # ---------------- MAIN ------------------
 if __name__ == "__main__":
     root = tk.Tk()
@@ -9,7 +9,7 @@ if __name__ == "__main__":
     root.geometry("600x500")
     root.configure(bg="white")
 
-    model = Model()
-    app = Controller(root, model)
 
+    model = Model()
+    init = Controller(root, model)
     root.mainloop()

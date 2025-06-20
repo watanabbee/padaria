@@ -2,8 +2,9 @@ import sqlite3 as sql
 from datetime import datetime
 
 class Produto:
-    def __init__(self, nome, ingredientes, modo_preparo, imagem):
+    def __init__(self, nome, preco, ingredientes, modo_preparo, imagem):
         self.nome = nome
+        self.preco = preco
         self.ingredientes = ingredientes
         self.modo_preparo = modo_preparo
         self.imagem = imagem
@@ -11,7 +12,6 @@ class Produto:
 class Model:
 
     def __init__(self):
-        self.data = "Algum dado do modelo"
         self.conexao = sql.connect('padaria.db')
         self.criar_tabelas()
         self.contador = 0
@@ -21,6 +21,7 @@ class Model:
         return [
             Produto(
                 nome="Misto Quente",
+                preco = 1.50,
                 ingredientes="Pão, presunto, queijo, orégano e manteiga.",
                 modo_preparo="Com duas fatias de pão besuntamos ambas de manteiga, salpicamos o orégano "
                              "e colocamos duas fatias de queijo e presunto, finalizando dando o ponto na chapa.",
@@ -28,6 +29,7 @@ class Model:
             ),
             Produto(
                 nome="Pão de Queijo",
+                preco = 1.50,
                 ingredientes="Polvilho, queijo, leite, ovos e óleo.",
                 modo_preparo="Mistura-se todos os ingredientes até formar uma massa homogênea e assa-se até dourar.",
                 imagem="imagens/misto.png"
