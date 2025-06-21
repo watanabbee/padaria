@@ -254,37 +254,38 @@ class TelaJogo(LayoutBase):
     def __init__(self, master, controller):
         super().__init__(master)
         self.controller = controller
-        self.controller.iniciar_cronometro()
         self.create_widgets()
 
     def create_widgets(self):
         self.frame_corpo = tk.Frame(self.frame_conteudo)
         self.frame_corpo.pack(expand=True, pady=20)
 
-        self.label_imagem = tk.Label(self.frame_corpo,text="mistos quentes comidos: ")
-        self.label_imagem.grid(row=0,column=0)
+        self.label_imagem = tk.Label(self.frame_corpo, text="mistos quentes comidos: 0")
+        self.label_imagem.grid(row=0, column=0)
+
         self.botao_imagem = None
-        self.contador_label = tk.Label(self.frame_corpo,text="Cliques: 0")
-        self.cronometro_label = tk.Label(self.frame_corpo,text="Tempo : 0")
 
-        self.adicionar_botao_rodape("Voltar", comando=lambda: self.controller.gerenciador_telas(2), lado="left")
+        self.contador_label = tk.Label(self.frame_corpo, text="Cliques: 0")
+        self.contador_label.grid(row=3, column=0)
+
+        self.cronometro_label = tk.Label(self.frame_corpo, text="Tempo: 0.00 segundos")
+        self.cronometro_label.grid(row=2, column=0)
+        
+
+        self.adicionar_botao_rodape("Voltar", comando=lambda: self.controller.gerenciador_telas(3), lado="left")
         self.adicionar_botao_rodape("Seguir", comando=lambda: self.controller.gerenciador_telas(3), lado="right")
+    
+    def atualizar_mistoQuentes(self, comidos):
+        self.label_imagem.config(text=f"mistos quentes comidos: {comidos}")
 
-    def atualizar_tempo(self):
-        self.tempo = self.controller.get_time()
-        try:
-            self.cronometro_label = tk.Label(self.frame_corpo, text=f"Tempo: {self.tempo:.2f} segundos")
-        except:
-            self.cronometro_label = tk.Label(self.frame_corpo, text=f"Tempo: 0.00 segundos")
-        self.cronometro_label.grid(row=2,column=0)
+    def atualizar_tempo(self, tempo):
+        self.cronometro_label.config(text=f"Tempo: {tempo:.2f} segundos")
 
     def atualizar_contador(self, valor):
         self.contador_label.config(text=f"Cliques: {valor}")
-        self.contador_label.grid(row=3,column=0)
         self.atualizar_imagem()
-    
-    def atualizar_imagem(self):
 
+    def atualizar_imagem(self):
         caminho = self.controller.get_CaminhoJogo()
 
         try:
@@ -296,19 +297,19 @@ class TelaJogo(LayoutBase):
                 self.botao_imagem.config(image=self.foto)
             else:
                 self.botao_imagem = tk.Button(
-                    self.frame_corpo, image=self.foto, command=lambda: (self.acao_botao_imagem()),
+                    self.frame_corpo, image=self.foto, command=lambda: self.acao_botao_imagem(),
                     borderwidth=0, highlightthickness=0, bg="white", activebackground="white"
                 )
-                self.botao_imagem.grid(row=1,column=0)
+                self.botao_imagem.grid(row=1, column=0)
 
         except Exception as e:
             print(f"Erro ao carregar {caminho}: {e}")
             if self.botao_imagem:
                 self.botao_imagem.destroy()
             self.label_imagem.config(text="Imagem não encontrada", image="")
-        
+
     def acao_botao_imagem(self):
         self.controller.incrementar_cliques()
-        self.atualizar_imagem()
+
 
             
