@@ -1,11 +1,28 @@
 import tkinter as tk 
 from PIL import Image, ImageTk
 from tkinter import ttk
-from Layoutview import LayoutBase
+
+class LayoutBase(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master, bg="white")
+        
+        self.frame_topo = tk.Frame(self, bg="#d2a679", height=80)
+        self.frame_topo.pack(fill="x")
+        tk.Label(self.frame_topo, text="Padaria VC++", bg="#d2a679", fg="black",
+                 font=("Arial", 20, "bold")).grid(row=0, column=0, sticky="w", padx=10, pady=5)
+        tk.Label(self.frame_topo, text="Av. Das Padarias nº92", bg="#d2a679", fg="black",
+                 font=("Arial", 10)).grid(row=1, column=0, sticky="w", padx=10)
+
+        self.frame_conteudo = tk.LabelFrame(self, bg="white")
+        self.frame_conteudo.pack(fill="both", expand=True, padx=20, pady=40)
+
+        self.frame_rodape = tk.Frame(self, bg="white", height=50)
+        self.frame_rodape.pack(fill="x", pady=5)
+
+    def adicionar_botao_rodape(self, texto, comando, lado="left"):
+        tk.Button(self.frame_rodape, text=texto, width=10, command=comando).pack(side=lado, padx=10)
 
 
-
-# ---------------- VIEW ------------------
 class Tela1View(LayoutBase):
     def __init__(self, master, controller):
         super().__init__(master)
@@ -55,11 +72,12 @@ class Tela1View(LayoutBase):
         
         self.adicionar_botao_rodape("Seguir", comando=lambda: self.controller.gerenciador_telas(2), lado="right")
 
+
 class Tela2View(LayoutBase):
-    def __init__(self, master, controller, produtos):
+    def __init__(self, master, controller):
         super().__init__(master)
         self.controller = controller
-        self.produtos = produtos
+        self.produtos = self.controller.get_Produto()
         self.fotos = []
         self.create_widgets()
         self.exibir_produtos(self.produtos)
@@ -75,9 +93,8 @@ class Tela2View(LayoutBase):
         tk.Label(frame_busca, text="Buscar:", bg="white", font=("Arial", 12)).pack(side="left", padx=10)
         self.busca_entry = tk.Entry(frame_busca, width=50)
         self.busca_entry.pack(side="left", padx=5)
-        busca = self.busca_entry.get()
 
-        tk.Button(frame_busca, text="Pesquisar", command=lambda: self.controller.filtrar_produtos(busca)).pack(side="left", padx=5)
+        tk.Button(frame_busca, text="Pesquisar", command=lambda: self.controller.filtrar_produtos()).pack(side="left", padx=5)
         
         frame_conteudo = tk.Frame(self.frame_conteudo, bg="white")
         frame_conteudo.pack(fill="both", expand=True, padx=10, pady=5)
@@ -105,7 +122,7 @@ class Tela2View(LayoutBase):
         try:
             imagem = Image.open(caminho).resize(tamanho, Image.LANCZOS)
             foto = ImageTk.PhotoImage(imagem)
-            self.fotos.append(foto)  # Salvar referência
+            self.fotos.append(foto)  
             return foto
         except Exception as e:
             print(f"Erro ao carregar {caminho}: {e}")
@@ -151,7 +168,7 @@ class Tela2extendidaView(LayoutBase):
 
         frame = tk.Frame(self.frame_conteudo, bd=1, relief="solid", bg="white", padx=10, pady=10)
         frame.pack(fill="both", expand=True)
-        # Título
+
         tk.Label(frame, text=self.produto.nome, bg="white", font=("Arial", 16, "bold")).grid(
             row=0, column=0, columnspan=2, sticky="w", padx=10, pady=5
         )
@@ -239,7 +256,8 @@ class Tela3View(LayoutBase):
                   width=15).grid(row=1, column=0, pady=10)
 
         self.adicionar_botao_rodape("Voltar", comando=lambda: self.controller.gerenciador_telas(2), lado="left")
-    
+
+
 class TelaJogo(LayoutBase):
     def __init__(self, master, controller):
         super().__init__(master)
@@ -268,7 +286,7 @@ class TelaJogo(LayoutBase):
     def atualizar_tempo(self, tempo):
         self.cronometro_label.config(text=f"Tempo: {tempo:.2f} segundos")
 
-    def atualizar_contador(self, valor):
+    def atualizar_contador(self):
         self.atualizar_imagem()
 
     def atualizar_imagem(self):
@@ -296,6 +314,7 @@ class TelaJogo(LayoutBase):
 
     def acao_botao_imagem(self):
         self.controller.incrementar_cliques()
+
 
 class TelaJogoExtendida(LayoutBase):
 

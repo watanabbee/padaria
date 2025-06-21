@@ -5,21 +5,20 @@ class Controller:
     def __init__(self, root, model):
         self.root = root
         self.model = model
+        self.produtos = self.model.carregar_produtos()
         self.inicio = None
         self.rodando = False
         self.misto_comidos = 0
 
         self.tela1 = v.Tela1View(root, self)
-        self.tela2 = v.Tela2View(self.root,self, self.model.carregar_produtos())
+        self.tela2 = v.Tela2View(self.root,self)
         self.tela3 = v.Tela3View(root, self)
         self.telaJogo = v.TelaJogo(root, self)
         self.telaJogoExtendida = v.TelaJogoExtendida(root,self)
 
         self.tela_atual = None
-        self.gerenciador_telas(4)
-        self.produtos = self.model.carregar_produtos()
+        self.gerenciador_telas(1)
         
-
     def gerenciador_telas(self, id):
         if id == 1:
             self.mostrar_tela(self.tela1)
@@ -39,26 +38,15 @@ class Controller:
             self.telaJogoExtendida.set_score()
             self.telaJogoExtendida.set_imagemFinal()
 
-    def getProduto(self):
-        self.produtos = self.model.carregar_produtos()
+    def get_Produto(self):
         return self.produtos
 
-    def mostrar_lista_produtos(self):
-        if self.tela_atual:
-            self.tela_atual.pack_forget()
-
-        produtos = self.model.carregar_produtos()
-        self.tela2 = v.Tela2View(self.root,self, produtos)
-
-        self.tela_atual = self.tela3
-        self.tela_atual.pack(fill="both", expand=True)
-
-    def filtrar_produtos(self, termoBusca):
-        termoBusca = termoBusca.lower()
+    def filtrar_produtos(self):
+        termoBusca = self.tela2.busca_entry.get().lower()
         produtos_filtrados = [p for p in self.produtos if termoBusca in p.nome.lower()]
         self.tela2.exibir_produtos(produtos_filtrados)
 
-    def mostrar_detalhes(self, produto):
+    def mostrar_detalhes(self,produto):
         self.tela2extendida = v.Tela2extendidaView(self.root, self, produto)
         self.mostrar_tela(self.tela2extendida)
 

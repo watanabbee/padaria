@@ -9,6 +9,7 @@ class Produto:
         self.modo_preparo = modo_preparo
         self.imagem = imagem
 
+
 class Model:
 
     def __init__(self):
