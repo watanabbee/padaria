@@ -14,8 +14,8 @@ class LayoutBase(tk.Frame):
                  font=("Arial", 10)).grid(row=1, column=0, sticky="w", padx=10)
 
         # Conteúdo
-        self.frame_conteudo = tk.Frame(self, bg="white")
-        self.frame_conteudo.pack(fill="both", expand=True, padx=10, pady=5)
+        self.frame_conteudo = tk.LabelFrame(self, bg="white")
+        self.frame_conteudo.pack(fill="both", expand=True, padx=20, pady=40)
 
         # Rodapé
         self.frame_rodape = tk.Frame(self, bg="white", height=50)

@@ -33,14 +33,60 @@ class Model:
                 ingredientes="Polvilho, queijo, leite, ovos e óleo.",
                 modo_preparo="Mistura-se todos os ingredientes até formar uma massa homogênea e assa-se até dourar.",
                 imagem="imagens/misto.png"
+            ),
+                        Produto(
+                nome="Misto Quente",
+                preco = 1.50,
+                ingredientes="Pão, presunto, queijo, orégano e manteiga.",
+                modo_preparo="Com duas fatias de pão besuntamos ambas de manteiga, salpicamos o orégano "
+                             "e colocamos duas fatias de queijo e presunto, finalizando dando o ponto na chapa.",
+                imagem="imagens/misto.png"
+            ),
+            Produto(
+                nome="Pão de Queijo",
+                preco = 1.50,
+                ingredientes="Polvilho, queijo, leite, ovos e óleo.",
+                modo_preparo="Mistura-se todos os ingredientes até formar uma massa homogênea e assa-se até dourar.",
+                imagem="imagens/misto.png"
+            ),
+                        Produto(
+                nome="Misto Quente",
+                preco = 1.50,
+                ingredientes="Pão, presunto, queijo, orégano e manteiga.",
+                modo_preparo="Com duas fatias de pão besuntamos ambas de manteiga, salpicamos o orégano "
+                             "e colocamos duas fatias de queijo e presunto, finalizando dando o ponto na chapa.",
+                imagem="imagens/misto.png"
+            ),
+            Produto(
+                nome="Pão de Queijo",
+                preco = 1.50,
+                ingredientes="Polvilho, queijo, leite, ovos e óleo.",
+                modo_preparo="Mistura-se todos os ingredientes até formar uma massa homogênea e assa-se até dourar.",
+                imagem="imagens/misto.png"
+            ),
+                        Produto(
+                nome="Misto Quente",
+                preco = 1.50,
+                ingredientes="Pão, presunto, queijo, orégano e manteiga.",
+                modo_preparo="Com duas fatias de pão besuntamos ambas de manteiga, salpicamos o orégano "
+                             "e colocamos duas fatias de queijo e presunto, finalizando dando o ponto na chapa.",
+                imagem="imagens/misto.png"
+            ),
+            Produto(
+                nome="Pão de Queijo",
+                preco = 1.50,
+                ingredientes="Polvilho, queijo, leite, ovos e óleo.",
+                modo_preparo="Mistura-se todos os ingredientes até formar uma massa homogênea e assa-se até dourar.",
+                imagem="imagens/misto.png"
             )
         ]
 
+    def get_Produtos(self):
+        return self.carregar_produtos()
+    
+
     def incrementar_contador(self):
         self.contador += 1
-
-    def obter_contador(self):
-        return self.contador
     
     def criar_tabelas(self):
         cursor = self.conexao.cursor()
@@ -49,15 +95,24 @@ class Model:
         
         self.conexao.commit()
 
-
     def registrar_clique(self):
         cursor = self.conexao.cursor()
         timestamp = datetime.now().isoformat()
         cursor.execute('INSERT INTO cliques (timestamp) VALUES (?)', (timestamp,))
         self.conexao.commit()
 
-    def contar_cliques(self):
+    def get_Cliques(self):
         cursor = self.conexao.cursor()
         cursor.execute('SELECT COUNT(id) FROM cliques')
         resultado = cursor.fetchone()
+
         return resultado[0] if resultado else 0
+
+    
+    def set0_Cliques(self):
+
+        cursor = self.conexao.cursor()
+        cursor.execute('DELETE FROM cliques')
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name='cliques'")
+    
+        self.conexao.commit()
