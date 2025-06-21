@@ -183,24 +183,20 @@ class Tela3View(LayoutBase):
 
     def create_widgets(self):
         
-        # Definindo dois containers principais: Esquerda (cupons) e Direita (jogo)
         self.frame_conteudo.grid_columnconfigure(0, weight=1)
         self.frame_conteudo.grid_columnconfigure(1, weight=1)
         self.frame_conteudo.grid_rowconfigure(0, weight=1)
 
-        # ----- Container Esquerdo -----
         container_esquerdo = tk.Frame(self.frame_conteudo, bg="white")
         container_esquerdo.grid(row=0, column=0, sticky="nsew", padx=20, pady=10)
 
-        container_esquerdo.grid_rowconfigure(0, weight=1)  # Parte texto + botões
-        container_esquerdo.grid_rowconfigure(1, weight=0)  # Botão "Meus Cupons"
+        container_esquerdo.grid_rowconfigure(0, weight=1)  
+        container_esquerdo.grid_rowconfigure(1, weight=0)  
         container_esquerdo.grid_columnconfigure(0, weight=1)
 
-        # Texto informativo
         tk.Label(container_esquerdo, text="Interessado em ganhar até\n20% de desconto em suas\ncompras físicas?",
-                 bg="white", font=("Arial", 11), justify="left").grid(row=0, column=0, sticky="nw", pady=(0, 10))
+                 bg="white", font=("Arial", 11), justify="left").grid(row=0, column=0, sticky="n", pady=(0, 10))
 
-        # Frame para botões de desconto
         frame_botoes = tk.Frame(container_esquerdo, bg="white")
         frame_botoes.grid(row=0, column=0, sticky="s", pady=(60, 0))
 
@@ -215,12 +211,9 @@ class Tela3View(LayoutBase):
                             width=10, height=2)
             btn.grid(row=i // 2, column=i % 2, padx=5, pady=5, sticky="nsew")
 
-        # Botão "Meus Cupons" centralizado na parte inferior
         tk.Button(container_esquerdo, text="Meus Cupons", width=15,
                   relief="solid").grid(row=1, column=0, pady=10)
 
-
-        # ----- Container Direito -----
         container_direito = tk.Frame(self.frame_conteudo, bg="white")
         container_direito.grid(row=0, column=1, sticky="nsew", padx=20, pady=10)
 
@@ -228,11 +221,9 @@ class Tela3View(LayoutBase):
         container_direito.grid_rowconfigure(1, weight=0)
         container_direito.grid_columnconfigure(0, weight=1)
 
-        # Texto superior
         tk.Label(container_direito, text="Então coma todos os Mistos\nQuentes possíveis!",
                  bg="white", font=("Arial", 11), justify="center").grid(row=0, column=0, sticky="n", pady=(0, 10))
 
-        # Frame da imagem
         frame_imagem = tk.Frame(container_direito, bg="white")
         frame_imagem.grid(row=0, column=0, sticky="n", pady=(60, 0))
 
@@ -244,7 +235,6 @@ class Tela3View(LayoutBase):
         except:
             tk.Label(frame_imagem, text="[Imagem]", bg="white").pack()
 
-        # Botão "Jogar" centralizado na parte inferior
         tk.Button(container_direito, text="Jogar", command = lambda: self.controller.gerenciador_telas(4), bg="#00cc00", fg="white",
                   width=15).grid(row=1, column=0, pady=10)
 
@@ -257,23 +247,20 @@ class TelaJogo(LayoutBase):
         self.create_widgets()
 
     def create_widgets(self):
-        self.frame_corpo = tk.Frame(self.frame_conteudo)
+        self.frame_corpo = tk.Frame(self.frame_conteudo, bg="white")
         self.frame_corpo.pack(expand=True, pady=20)
 
-        self.label_imagem = tk.Label(self.frame_corpo, text="mistos quentes comidos: 0")
+        self.label_imagem = tk.Label(self.frame_corpo, text="mistos quentes comidos: 0", bg="white")
         self.label_imagem.grid(row=0, column=0)
 
         self.botao_imagem = None
 
-        self.contador_label = tk.Label(self.frame_corpo, text="Cliques: 0")
-        self.contador_label.grid(row=3, column=0)
-
-        self.cronometro_label = tk.Label(self.frame_corpo, text="Tempo: 0.00 segundos")
+        self.cronometro_label = tk.Label(self.frame_corpo, text="Tempo: 0.00 segundos", bg="white")
         self.cronometro_label.grid(row=2, column=0)
         
 
         self.adicionar_botao_rodape("Voltar", comando=lambda: self.controller.gerenciador_telas(3), lado="left")
-        self.adicionar_botao_rodape("Seguir", comando=lambda: self.controller.gerenciador_telas(3), lado="right")
+        self.adicionar_botao_rodape("Seguir", comando=lambda: self.controller.gerenciador_telas(5), lado="right")
     
     def atualizar_mistoQuentes(self, comidos):
         self.label_imagem.config(text=f"mistos quentes comidos: {comidos}")
@@ -282,7 +269,6 @@ class TelaJogo(LayoutBase):
         self.cronometro_label.config(text=f"Tempo: {tempo:.2f} segundos")
 
     def atualizar_contador(self, valor):
-        self.contador_label.config(text=f"Cliques: {valor}")
         self.atualizar_imagem()
 
     def atualizar_imagem(self):
@@ -290,7 +276,7 @@ class TelaJogo(LayoutBase):
 
         try:
             img = Image.open(caminho)
-            img = img.resize((200, 150))
+            img = img.resize((400, 300))
             self.foto = ImageTk.PhotoImage(img)
 
             if self.botao_imagem:
@@ -310,6 +296,62 @@ class TelaJogo(LayoutBase):
 
     def acao_botao_imagem(self):
         self.controller.incrementar_cliques()
+
+class TelaJogoExtendida(LayoutBase):
+
+    def __init__(self, master, controller):
+        super().__init__(master)
+        self.controller = controller
+        self.create_widgets()
+    
+    def create_widgets(self):
+        
+        self.frame_corpo = self.frame_conteudo
+        self.frame_corpo.pack(expand=True, pady=20)
+
+        self.container_esquerdo = tk.Frame(self.frame_corpo, bg="white")
+        self.container_esquerdo.grid(row=0, column=0, sticky="nsew", padx=20, pady=10)
+        self.container_esquerdo.grid_rowconfigure(0, weight=1)  
+        self.container_esquerdo.grid_rowconfigure(1, weight=0)  
+        self.container_esquerdo.grid_columnconfigure(0, weight=1)
+
+        self.container_direito = tk.Frame(self.frame_corpo, bg="white")
+        self.container_direito.grid(row=0, column=1, sticky="nsew", padx=20, pady=10)
+        self.container_direito.grid_rowconfigure(0, weight=1)
+        self.container_direito.grid_rowconfigure(1, weight=0)
+        self.container_direito.grid_columnconfigure(0, weight=1)
+
+        self.label_imagem = tk.Label(self.container_esquerdo, text="mistos quentes comidos: 0", bg="white")
+        self.label_imagem.grid(row=0, column=0, sticky="n")
+
+        self.imagem_final = None
+
+        self.cronometro_label = tk.Label(self.container_esquerdo, text="Tempo: 0.00 segundos", bg="white")
+        self.cronometro_label.grid(row=2, column=0, sticky="s")
+
+        fimJogo_label = tk.Label(self.container_direito, text="Não foi dessa vez", bg="white")
+        fimJogo_label.grid(row=0, column=0, sticky="n", pady=(0, 10))
+        
+
+        self.adicionar_botao_rodape("Voltar", comando=lambda: self.controller.gerenciador_telas(4), lado="left")
+        self.adicionar_botao_rodape("Seguir", comando=lambda: self.controller.gerenciador_telas(5), lado="right")
+    
+    def set_imagemFinal(self):
+        caminho = self.controller.get_CaminhoJogo()
+        try:
+            imagem = Image.open(caminho)
+            imagem = imagem.resize((240, 200), Image.LANCZOS)
+            self.foto = ImageTk.PhotoImage(imagem)
+            self.imagem_final =tk.Label(self.container_esquerdo, image=self.foto, bg="white").grid(row=1,column=0,sticky="n")
+        except:
+            self.imagem_final =tk.Label(self.container_esquerdo, text="[Imagem]", bg="white").grid(row=1,column=0,sticky="n")
+
+    def set_score(self):
+        tempoFinal = self.controller.get_tempo_final()
+        misto_comidos = self.controller.get_mistoComidos()
+        
+        self.label_imagem.config(text=f"mistos quentes comidos: {misto_comidos}")
+        self.cronometro_label.config(text=f"Tempo: {tempoFinal:.2f} segundos")
 
 
             

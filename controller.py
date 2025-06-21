@@ -13,6 +13,7 @@ class Controller:
         self.tela2 = v.Tela2View(self.root,self, self.model.carregar_produtos())
         self.tela3 = v.Tela3View(root, self)
         self.telaJogo = v.TelaJogo(root, self)
+        self.telaJogoExtendida = v.TelaJogoExtendida(root,self)
 
         self.tela_atual = None
         self.gerenciador_telas(4)
@@ -32,6 +33,11 @@ class Controller:
             self.resetar_cronometro()
             self.mostrar_tela(self.telaJogo)
             self.iniciar_cronometro()
+        elif id ==5:
+            self.parar_cronometro()
+            self.mostrar_tela(self.telaJogoExtendida)
+            self.telaJogoExtendida.set_score()
+            self.telaJogoExtendida.set_imagemFinal()
 
     def getProduto(self):
         self.produtos = self.model.carregar_produtos()
@@ -83,7 +89,12 @@ class Controller:
             self.root.after(100, self.atualizar_cronometro)
 
     def parar_cronometro(self):
-        self.rodando = False
+        if self.rodando:
+            self.tempo_final = t.time() - self.inicio
+            self.rodando = False
+
+    def get_tempo_final(self):
+        return getattr(self, 'tempo_final', 0)
 
     def resetar_cronometro(self):
         self.rodando = False
@@ -100,6 +111,10 @@ class Controller:
 
         caminho = f"imagens/misto{round(x/2)}.png"
         return caminho
+    
+    def get_mistoComidos(self):
+        misto_comidos = self.misto_comidos
+        return misto_comidos
 
     def atualizar_contador_view(self):
         valor = self.model.get_Cliques()
